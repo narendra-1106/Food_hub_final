@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: foodhub-web
+    env: node
+    buildCommand: npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        value: mongodb+srv://narendra1106:Narendra1106@cluster0.oy5y6pj.mongodb.net/foodhub?retryWrites=true&w=majority
+      - key: JWT_SECRET
+        value: supersecretjwtkey_for_dev_only
