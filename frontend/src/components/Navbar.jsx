@@ -54,13 +54,6 @@ export default function Navbar() {
         <ul className="nav-links nav-links-desktop">
           <li><Link to="/">Home</Link></li>
 
-          {user?.role === 'admin' && (
-            <li>
-              <Link to="/admin" className="admin-nav-badge">
-                👑 Admin Dashboard
-              </Link>
-            </li>
-          )}
 
           <li>
             <Link to="/profile" className="nav-profile-link">
@@ -174,11 +167,6 @@ export default function Navbar() {
             <nav className="mobile-nav-links">
               <Link to="/" onClick={closeMenu}>🏠 Home</Link>
 
-              {user?.role === 'admin' && (
-                <Link to="/admin" className="admin-nav-badge" onClick={closeMenu} style={{ width: 'fit-content' }}>
-                  👑 Admin Dashboard
-                </Link>
-              )}
 
               <Link to="/profile" onClick={closeMenu}>
                 👤 {user ? user.name : 'Profile'}

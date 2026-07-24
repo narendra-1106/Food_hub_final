@@ -210,11 +210,7 @@ export default function Profile() {
                 : 'Manage your profile, addresses & orders'}
             </p>
           </div>
-          {user?.role === 'admin' && (
-            <Link to="/admin" className="btn btn-primary" style={{ marginLeft: 'auto', textDecoration: 'none', padding: '0.5rem 1.2rem' }}>
-              🛡️ Admin Dashboard
-            </Link>
-          )}
+
         </div>
 
         {/* Loyalty Card */}
@@ -455,22 +451,7 @@ export default function Profile() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <h3 style={{ margin: 0 }}>⚙️ Account Settings</h3>
 
-            {user?.role === 'admin' && (
-              <div className="settings-card">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div>
-                    <h4 style={{ margin: 0 }}>🛡️ Admin Access</h4>
-                    <p style={{ margin: '0.25rem 0 0', color: 'var(--text-muted)', fontSize: '0.88rem' }}>
-                      You have administrative privileges.
-                    </p>
-                  </div>
-                  <Link to="/admin" className="btn btn-primary"
-                    style={{ width: 'auto', padding: '0.5rem 1.2rem', textDecoration: 'none', flexShrink: 0 }}>
-                    🛡️ Go to Dashboard
-                  </Link>
-                </div>
-              </div>
-            )}
+
 
             <div className="settings-card">
               <h4 style={{ margin: '0 0 0.5rem' }}>📊 Account Summary</h4>
