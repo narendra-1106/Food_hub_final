@@ -70,7 +70,7 @@ exports.getProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const { name, phone, email, addresses } = req.body;
+    const { name, phone, email, addresses, location } = req.body;
     const user = await User.findById(req.user._id);
 
     if (user) {
@@ -86,6 +86,9 @@ exports.updateProfile = async (req, res) => {
       if (addresses) {
         user.addresses = addresses;
       }
+      if (location) {
+        user.deliveryAddress = location;
+      }
       const updatedUser = await user.save();
       
       res.json({
@@ -94,6 +97,7 @@ exports.updateProfile = async (req, res) => {
         email: updatedUser.email,
         phone: updatedUser.phone,
         role: updatedUser.role,
+        deliveryAddress: updatedUser.deliveryAddress,
         addresses: updatedUser.addresses,
         favorites: updatedUser.favorites
       });

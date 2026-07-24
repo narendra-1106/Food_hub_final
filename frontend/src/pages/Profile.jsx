@@ -114,8 +114,21 @@ export default function Profile() {
     }
     setSaving(true);
     try {
-      const payload = { ...form, addresses };
+      // If a primary location is set but not in addresses, add it
+      let finalAddresses = [...addresses];
+      if (form.location && form.location.trim() !== '') {
+        if (!finalAddresses.includes(form.location.trim())) {
+          // If no addresses yet, push it. Or if some exist, push it.
+          finalAddresses.push(form.location.trim());
+        }
+      }
+      
+      const payload = { ...form, addresses: finalAddresses };
       const updated = await updateProfile(payload);
+      
+      // Sync local state
+      setAddresses(finalAddresses);
+      
       if (setUser) setUser({ ...updated });
       localStorage.setItem('foodhub_profile', JSON.stringify(payload));
       setSaved(true);

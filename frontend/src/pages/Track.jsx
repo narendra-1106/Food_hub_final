@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { getOrderById } from '../api';
 
-const SOCKET_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const SOCKET_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://food-hub-final-bafz.onrender.com' : 'http://localhost:5000');
 
 
 const ORDER_STEPS = [
