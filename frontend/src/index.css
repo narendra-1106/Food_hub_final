@@ -670,12 +670,14 @@ html, body {
     font-size: 1.3rem;
   }
 
-  .nav-links {
-    gap: 0.85rem;
+  .nav-links-desktop {
+    display: none;
   }
 
-  .nav-links a, .nav-links button {
-    font-size: 0.9rem;
+  .nav-mobile-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 
   /* Hero */
@@ -3229,6 +3231,8 @@ html, body {
   padding: 4px;
   border-radius: 0.5rem;
   transition: background 0.2s;
+  position: relative;
+  z-index: 1000;
 }
 .hamburger-btn:hover { background: rgba(255,255,255,0.06); }
 .hamburger-btn span {
