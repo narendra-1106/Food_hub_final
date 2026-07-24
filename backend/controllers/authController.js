@@ -144,18 +144,6 @@ exports.getFavorites = async (req, res) => {
   }
 };
 
-exports.makeAdmin = async (req, res) => {
-  try {
-    const user = await User.findByIdAndUpdate(
-      req.user._id,
-      { role: 'admin' },
-      { new: true }
-    ).select('-password');
-    res.json({ message: 'Successfully promoted to Admin', user });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
 
 exports.getAllUsers = async (req, res) => {
   try {

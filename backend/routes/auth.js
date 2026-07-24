@@ -6,7 +6,6 @@ const {
   updateProfile, 
   toggleFavorite, 
   getFavorites, 
-  makeAdmin, 
   getAllUsers, 
   updateUserRole 
 } = require('../controllers/authController');
@@ -20,7 +19,7 @@ router.get('/profile', protect, getProfile);
 router.put('/profile', protect, updateProfile);
 router.post('/favorites/:restaurantId', protect, toggleFavorite);
 router.get('/favorites', protect, getFavorites);
-router.put('/make-admin', protect, makeAdmin);
+
 router.get('/users', protect, isAdmin, getAllUsers);
 router.put('/users/:id/role', protect, isAdmin, updateUserRole);
 

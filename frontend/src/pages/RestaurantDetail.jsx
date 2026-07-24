@@ -18,6 +18,7 @@ export default function RestaurantDetail() {
   const [isFav, setIsFav] = useState(false);
   const [activeTab, setActiveTab] = useState('menu');
   const [vegOnly, setVegOnly] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const token = localStorage.getItem('foodhub_token');
 
   useEffect(() => {
@@ -119,9 +120,12 @@ export default function RestaurantDetail() {
     return false;
   };
 
+  const availableCategories = ['All', ...new Set(menuItems.map(item => item.category).filter(Boolean))];
+
   const filteredMenuItems = menuItems.filter(item => {
-    if (!vegOnly) return true;
-    return isItemVeg(item);
+    if (vegOnly && !isItemVeg(item)) return false;
+    if (selectedCategory !== 'All' && item.category !== selectedCategory) return false;
+    return true;
   });
 
   const averageRating = restaurant.rating || restaurant.averageRating || 4.0;
@@ -205,6 +209,22 @@ export default function RestaurantDetail() {
               )}
             </div>
           </div>
+
+          {/* Category Selector */}
+          {availableCategories.length > 1 && (
+            <div className="categories-scroll" style={{ marginBottom: '1.5rem', paddingBottom: '0.5rem', borderBottom: '1px solid var(--border-glass)' }}>
+              {availableCategories.map(cat => (
+                <div
+                  key={cat}
+                  className={`category-pill ${selectedCategory === cat ? 'active' : ''}`}
+                  onClick={() => setSelectedCategory(cat)}
+                  style={{ padding: '0.4rem 1rem', fontSize: '0.9rem' }}
+                >
+                  {cat}
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Simple Row-Wise Menu List */}
           <div className="menu-list-rows">

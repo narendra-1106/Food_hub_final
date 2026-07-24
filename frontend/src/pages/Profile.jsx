@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { getProfile, updateProfile, getMyOrders, submitReview, makeAdmin } from '../api';
+import { getProfile, updateProfile, getMyOrders, submitReview } from '../api';
 
 const STATUS_COLORS = {
   pending:    { bg: 'rgba(245,158,11,0.18)',  color: '#f59e0b' },
@@ -22,7 +22,6 @@ export default function Profile() {
   const [orders, setOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
   const [activeTab, setActiveTab] = useState('info');
-  const [adminLoading, setAdminLoading] = useState(false);
 
   // Address management
   const [addresses, setAddresses] = useState([]);
@@ -183,21 +182,6 @@ export default function Profile() {
     }
   };
 
-  // Become Admin
-  const becomeAdmin = async () => {
-    if (!window.confirm('Enable admin access for demo purposes?')) return;
-    setAdminLoading(true);
-    try {
-      const updated = await makeAdmin();
-      if (setUser) setUser({ role: 'admin' });
-      alert('✅ You are now an Admin! Redirecting to Admin Dashboard...');
-      navigate('/admin');
-    } catch {
-      alert('Failed to enable admin. Make sure you are logged in.');
-    } finally {
-      setAdminLoading(false);
-    }
-  };
 
   const firstName = form.name?.split(' ')[0] || (user?.name?.split(' ')[0]) || 'User';
   const initials = form.name
@@ -471,31 +455,22 @@ export default function Profile() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <h3 style={{ margin: 0 }}>⚙️ Account Settings</h3>
 
-            <div className="settings-card">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>
-                  <h4 style={{ margin: 0 }}>🛡️ Admin Access (Demo)</h4>
-                  <p style={{ margin: '0.25rem 0 0', color: 'var(--text-muted)', fontSize: '0.88rem' }}>
-                    {user?.role === 'admin'
-                      ? 'You already have admin privileges.'
-                      : 'Unlock admin dashboard for demonstration purposes.'}
-                  </p>
-                </div>
-                {user?.role !== 'admin' ? (
-                  <button className="btn btn-primary"
-                    style={{ width: 'auto', padding: '0.5rem 1.2rem', flexShrink: 0 }}
-                    onClick={becomeAdmin}
-                    disabled={adminLoading}>
-                    {adminLoading ? '⏳ Enabling...' : '🔓 Become Admin'}
-                  </button>
-                ) : (
+            {user?.role === 'admin' && (
+              <div className="settings-card">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <h4 style={{ margin: 0 }}>🛡️ Admin Access</h4>
+                    <p style={{ margin: '0.25rem 0 0', color: 'var(--text-muted)', fontSize: '0.88rem' }}>
+                      You have administrative privileges.
+                    </p>
+                  </div>
                   <Link to="/admin" className="btn btn-primary"
                     style={{ width: 'auto', padding: '0.5rem 1.2rem', textDecoration: 'none', flexShrink: 0 }}>
                     🛡️ Go to Dashboard
                   </Link>
-                )}
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="settings-card">
               <h4 style={{ margin: '0 0 0.5rem' }}>📊 Account Summary</h4>

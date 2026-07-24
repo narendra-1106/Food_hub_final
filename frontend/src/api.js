@@ -46,10 +46,6 @@ export const getFavorites = async () => {
   return data;
 };
 
-export const makeAdmin = async () => {
-  const { data } = await api.put('/api/auth/make-admin');
-  return data;
-};
 
 // Admin User Management
 export const getAllUsers = async () => {
