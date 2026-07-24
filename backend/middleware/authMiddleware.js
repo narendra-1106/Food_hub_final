@@ -7,7 +7,7 @@ exports.protect = async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
       token = req.headers.authorization.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_foodhub_secret_key_123');
       
       req.user = await User.findById(decoded.id).select('-password');
       next();
@@ -45,7 +45,7 @@ exports.optionalProtect = async (req, res, next) => {
       const jwt = require('jsonwebtoken');
       const User = require('../models/User');
       const token = authHeader.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_foodhub_secret_key_123');
       req.user = await User.findById(decoded.id).select('-password');
     } catch {
       // invalid token — just continue without user
