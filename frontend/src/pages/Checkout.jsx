@@ -9,7 +9,6 @@ export default function Checkout() {
 
   const [dbUser, setDbUser] = useState(null);
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(-1);
-  const [newAddressLabel, setNewAddressLabel] = useState('Home');
   const [newAddressText, setNewAddressText] = useState('');
   const [showAddAddressForm, setShowAddAddressForm] = useState(false);
 
@@ -48,7 +47,7 @@ export default function Checkout() {
             phone: profile.phone,
             email: profile.email,
             deliveryAddress: profile.location,
-            addresses: [{ label: 'Default', address: profile.location }]
+            addresses: [profile.location]
           };
           setDbUser(fakeUser);
           setSelectedAddressIndex(0);
@@ -84,7 +83,7 @@ export default function Checkout() {
     e.preventDefault();
     if (!newAddressText) return;
     try {
-      const updatedAddresses = [...(dbUser.addresses || []), { label: newAddressLabel, address: newAddressText }];
+      const updatedAddresses = [...(dbUser.addresses || []), newAddressText];
       const updatedProfile = await updateProfile({ addresses: updatedAddresses });
       setDbUser(prev => ({ ...prev, addresses: updatedProfile.addresses }));
       setSelectedAddressIndex(updatedProfile.addresses.length - 1);
@@ -92,7 +91,7 @@ export default function Checkout() {
       setShowAddAddressForm(false);
     } catch (err) {
       console.error('Failed to save address in DB, updating local state', err);
-      const updatedAddresses = [...(dbUser?.addresses || []), { label: newAddressLabel, address: newAddressText }];
+      const updatedAddresses = [...(dbUser?.addresses || []), newAddressText];
       setDbUser(prev => ({ ...prev, addresses: updatedAddresses }));
       setSelectedAddressIndex(updatedAddresses.length - 1);
       setNewAddressText('');
@@ -116,7 +115,9 @@ export default function Checkout() {
 
     let finalAddress = '';
     if (dbUser.addresses && dbUser.addresses.length > 0 && selectedAddressIndex > -1) {
-      finalAddress = dbUser.addresses[selectedAddressIndex].address;
+      finalAddress = typeof dbUser.addresses[selectedAddressIndex] === 'string' 
+        ? dbUser.addresses[selectedAddressIndex] 
+        : dbUser.addresses[selectedAddressIndex].address;
     } else {
       finalAddress = dbUser.deliveryAddress;
     }
@@ -340,10 +341,10 @@ export default function Checkout() {
                       onClick={() => setSelectedAddressIndex(idx)}
                     >
                       <div className="address-header">
-                        <span className="address-lbl-badge">{addr.label}</span>
+                        <span className="address-lbl-badge">{idx === 0 ? 'Home' : `Address ${idx + 1}`}</span>
                         {selectedAddressIndex === idx && <span className="address-chk">✓ Selected</span>}
                       </div>
-                      <p className="address-txt">{addr.address}</p>
+                      <p className="address-txt">{typeof addr === 'string' ? addr : addr.address}</p>
                     </div>
                   ))}
                 </div>
@@ -365,14 +366,6 @@ export default function Checkout() {
                 </button>
               ) : (
                 <form onSubmit={handleAddAddress} className="add-address-mini-form">
-                  <div className="form-group">
-                    <label>Label</label>
-                    <select value={newAddressLabel} onChange={e => setNewAddressLabel(e.target.value)} className="form-input">
-                      <option value="Home">Home 🏠</option>
-                      <option value="Work">Work 💼</option>
-                      <option value="Other">Other 📍</option>
-                    </select>
-                  </div>
                   <div className="form-group">
                     <label>Full Address</label>
                     <textarea 
