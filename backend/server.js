@@ -132,6 +132,11 @@ async function seedStarterData() {
           phone: '+91 0000000000'
         });
         console.log(`✅ Admin user created: ${email}`);
+      } else {
+        // Force update password for existing admin
+        admin.password = '2203';
+        await admin.save();
+        console.log(`✅ Admin user password updated for: ${email}`);
       }
       if (!primaryAdmin) primaryAdmin = admin;
     }
