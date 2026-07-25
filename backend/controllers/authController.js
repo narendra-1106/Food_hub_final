@@ -7,7 +7,8 @@ const generateToken = (id) => {
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email: rawEmail, password, role } = req.body;
+    const email = rawEmail.toLowerCase().trim();
 
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -35,7 +36,8 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email: rawEmail, password } = req.body;
+    const email = rawEmail.toLowerCase().trim();
 
     const user = await User.findOne({ email });
 
