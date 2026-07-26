@@ -197,6 +197,10 @@ export default function Checkout() {
       navigate(`/track/${apiOrder._id}`);
     } catch (err) {
       console.error(err);
+      if (err.response && err.response.status === 401) {
+        // Interceptor will handle the redirect, just return
+        return;
+      }
       alert('Order placement failed. Using local fallback.');
       
       const details = {
