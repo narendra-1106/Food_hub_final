@@ -15,6 +15,21 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem('foodhub_token');
+      localStorage.removeItem('foodhub_profile');
+      // Redirect to login if not already there
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Auth & Profile
 export const loginUser = async (email, password) => {
   const { data } = await api.post('/api/auth/login', { email, password });
