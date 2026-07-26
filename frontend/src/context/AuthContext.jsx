@@ -22,9 +22,9 @@ export function AuthProvider({ children }) {
     const existingProfile = JSON.parse(localStorage.getItem('foodhub_profile') || '{}');
     localStorage.setItem('foodhub_profile', JSON.stringify({
       ...existingProfile,
-      firstName: existingProfile.firstName || firstName,
-      lastName: existingProfile.lastName || lastName,
-      email: existingProfile.email || email,
+      firstName,
+      lastName,
+      email,
     }));
   };
 
